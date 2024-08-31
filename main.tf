@@ -14,7 +14,7 @@ resource "aws_instance" "terrform_instance_app_server" {
     Name = "PetAppFrontEnd",
     Env  = "dev"
   }
-  key_name                    = "private_pet_server"
+  key_name                    = "pet-private-server"
   associate_public_ip_address = true
 
 
