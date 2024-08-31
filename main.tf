@@ -1,21 +1,16 @@
 provider "aws" {
-    
+
   region  = "af-south-1"
 
 }
 # terraform init 
 
-resource "aws_instance" "terrform_instance_app_server" {
+resource "aws_vpc" "main" {
 
-  ami           = "ami-0c13b2d84424f9d8d"
-  instance_type = "t2.nano"
-  tenancy       = "default"
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
   tags = {
-    Name = "PetAppFrontEnd",
-    Env  = "dev"
+    Name = "main"
   }
-  key_name                    = "pet-private-server"
-  associate_public_ip_address = true
-
-
 }
