@@ -1,12 +1,12 @@
 provider "aws" {
-  region  = var.region
+  region = var.region
 
 }
 # terraform init 
 
 resource "aws_vpc" "app_vpc" {
 
-  cidr_block       =  var.vpc_cidr_block
+  cidr_block = var.vpc_cidr_block
 
 }
 
@@ -16,8 +16,8 @@ resource "aws_internet_gateway" "app_internet_gateway" {
 
 
 resource "aws_route_table" "public_route_table" {
-    vpc_id = aws_vpc.app_vpc.id
-   
+  vpc_id = aws_vpc.app_vpc.id
+
 }
 
 # Public Route
@@ -28,21 +28,21 @@ resource "aws_route" "public_route" {
 }
 
 resource "aws_route_table" "private_route_table" {
-    vpc_id = aws_vpc.app_vpc.id
-  
+  vpc_id = aws_vpc.app_vpc.id
+
 }
 
 #Elastic IP for nat gateway 
 
 resource "aws_eip" "eip_for_nat" {
-    depends_on = [ aws_internet_gateway.app_internet_gateway ]
-    domain = "vpc"
+  depends_on = [aws_internet_gateway.app_internet_gateway]
+  domain     = "vpc"
 }
 
 resource "aws_nat_gateway" "app_nat_gateway" {
-    allocation_id = aws_eip.eip_for_nat.id
-    subnet_id = aws_subnet.public_subnet.id
-  
+  allocation_id = aws_eip.eip_for_nat.id
+  subnet_id     = aws_subnet.public_subnet.id
+
 }
 
 # Route for Private Route Table to NAT Gateway
@@ -53,14 +53,14 @@ resource "aws_route" "private_nat" {
 }
 
 resource "aws_route_table_association" "public_subnet_route_table_association" {
-    subnet_id = aws_subnet.public_subnet.id
-    route_table_id = aws_route_table.public_route_table.id
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public_route_table.id
 
 }
 
 
 resource "aws_route_table_association" "private_subnet_route_table_association" {
-    subnet_id = aws_subnet.private_subnet.id
-    route_table_id = aws_route_table.private_route_table.id
-  
+  subnet_id      = aws_subnet.private_subnet.id
+  route_table_id = aws_route_table.private_route_table.id
+
 }
