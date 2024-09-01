@@ -5,6 +5,7 @@ resource "aws_instance" "public_front_end_instance" {
   instance_type   = var.public_instance_type
   key_name        = var.public_instance_key_name
   ami             = var.public_instance_ami
+  associate_public_ip_address = true
 
   tags = {
     Name = "Pet App Front End Instance"
