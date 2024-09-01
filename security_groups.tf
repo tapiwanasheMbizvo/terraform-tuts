@@ -3,10 +3,18 @@ resource "aws_security_group" "public_facing_instances_sg" {
 
   vpc_id = aws_vpc.app_vpc.id
 
+  tags = {
+  Name = "Public Facing EC2 Instance SG"
+}
+
 }
 
 resource "aws_security_group" "private_instances_sg" {
   vpc_id = aws_vpc.app_vpc.id
+
+    tags = {
+  Name = "Private EC2 Instance SG"
+}
 }
 
 #this rule allows ssh access from anywhere to port 22, not recommened will update with myip or custom cidr range if its in cooperate network
