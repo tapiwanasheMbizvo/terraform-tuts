@@ -8,15 +8,28 @@ resource "aws_vpc" "app_vpc" {
 
   cidr_block = var.vpc_cidr_block
 
+    tags = {
+    Name = "Pet App VPC"
+  }
+
+
 }
 
 resource "aws_internet_gateway" "app_internet_gateway" {
   vpc_id = aws_vpc.app_vpc.id
+
+      tags = {
+    Name = "Pet App Internet Gateway"
+  }
 }
 
 
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.app_vpc.id
+
+      tags = {
+    Name = "Pet App Public Route Table"
+  }
 
 }
 
@@ -30,6 +43,10 @@ resource "aws_route" "public_route" {
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.app_vpc.id
 
+   tags = {
+    Name = "Pet App Private Route Table"
+   }
+
 }
 
 #Elastic IP for nat gateway 
@@ -37,11 +54,18 @@ resource "aws_route_table" "private_route_table" {
 resource "aws_eip" "eip_for_nat" {
   depends_on = [aws_internet_gateway.app_internet_gateway]
   domain     = "vpc"
+   tags = {
+    Name = "Pet App EIP for Nat Gateway"
+   }
 }
 
 resource "aws_nat_gateway" "app_nat_gateway" {
   allocation_id = aws_eip.eip_for_nat.id
   subnet_id     = aws_subnet.public_subnet.id
+
+   tags = {
+    Name = "Pet App Public Route Table"
+    }
 
 }
 
