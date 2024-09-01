@@ -1,16 +1,66 @@
 provider "aws" {
-
-  region  = "af-south-1"
+  region  = var.region
 
 }
 # terraform init 
 
-resource "aws_vpc" "main" {
+resource "aws_vpc" "app_vpc" {
 
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
+  cidr_block       =  var.vpc_cidr_block
 
-  tags = {
-    Name = "main"
-  }
+}
+
+resource "aws_internet_gateway" "app_internet_gateway" {
+  vpc_id = aws_vpc.app_vpc.id
+}
+
+
+resource "aws_route_table" "public_route_table" {
+    vpc_id = aws_vpc.app_vpc.id
+   
+}
+
+# Public Route
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.app_internet_gateway.id
+}
+
+resource "aws_route_table" "private_route_table" {
+    vpc_id = aws_vpc.app_vpc.id
+  
+}
+
+#Elastic IP for nat gateway 
+
+resource "aws_eip" "eip_for_nat" {
+    depends_on = [ aws_internet_gateway.app_internet_gateway ]
+    domain = "vpc"
+}
+
+resource "aws_nat_gateway" "app_nat_gateway" {
+    allocation_id = aws_eip.eip_for_nat.id
+    subnet_id = aws_subnet.public_subnet.id
+  
+}
+
+# Route for Private Route Table to NAT Gateway
+resource "aws_route" "private_nat" {
+  route_table_id         = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.app_nat_gateway.id
+}
+
+resource "aws_route_table_association" "public_subnet_route_table_association" {
+    subnet_id = aws_subnet.public_subnet.id
+    route_table_id = aws_route_table.public_route_table.id
+
+}
+
+
+resource "aws_route_table_association" "private_subnet_route_table_association" {
+    subnet_id = aws_subnet.private_subnet.id
+    route_table_id = aws_route_table.private_route_table.id
+  
 }
