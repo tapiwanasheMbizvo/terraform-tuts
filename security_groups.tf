@@ -16,7 +16,7 @@ resource "aws_vpc_security_group_ingress_rule" "ssh_access" {
   to_port           = 22
   security_group_id = aws_security_group.public_facing_instances_sg.id
   cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "ssh"
+  ip_protocol       = "tcp"
 
 
 }
@@ -44,7 +44,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_from_public_sg" {
   cidr_ipv4                    = "0.0.0.0/0" # change this to allow only traffic from public sg ip address
   from_port                    = 22
   to_port                      = 22
-  ip_protocol                  = "ssh"
+  ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.public_facing_instances_sg.id
 
 }
