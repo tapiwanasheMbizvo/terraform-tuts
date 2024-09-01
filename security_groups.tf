@@ -47,6 +47,10 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_from_public_sg" {
   ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.public_facing_instances_sg.id
 
+tags = {
+  Name = "Allow SSH  from public sg"
+}
+
 }
 
 
