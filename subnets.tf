@@ -2,7 +2,9 @@ resource "aws_subnet" "public_subnet" {
 
   vpc_id                          = aws_vpc.app_vpc.id
   cidr_block                      = var.public_subnet_cidr
-  map_customer_owned_ip_on_launch = true
+  enable_resource_name_dns_a_record_on_launch  = true
+  map_public_ip_on_launch = true
+
 }
 
 resource "aws_subnet" "private_subnet" {
