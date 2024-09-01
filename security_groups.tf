@@ -35,7 +35,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_access" {
 resource "aws_vpc_security_group_egress_rule" "allow_egress" {
   security_group_id = aws_security_group.public_facing_instances_sg.id
   ip_protocol       = "-1" #allow the instance to communicate to the internet using all protocols
-  cidr_ipv4         = ["0.0.0.0/0"]
+  cidr_ipv4         = "0.0.0.0/0"
 
 }
 
@@ -53,7 +53,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_from_public_sg" {
 resource "aws_vpc_security_group_egress_rule" "allow_egress_from_private_instance" {
   security_group_id = aws_security_group.private_instances_sg.id
   ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/"
+  cidr_ipv4         = "0.0.0.0/0"
 
 }
 
