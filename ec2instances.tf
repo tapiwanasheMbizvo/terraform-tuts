@@ -1,10 +1,10 @@
 resource "aws_instance" "public_front_end_instance" {
 
-  subnet_id       = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.public_facing_instances_sg.id]
-  instance_type   = var.public_instance_type
-  key_name        = var.public_instance_key_name
-  ami             = var.public_instance_ami
+  subnet_id                   = aws_subnet.public_subnet.id
+  security_groups             = [aws_security_group.public_facing_instances_sg.id]
+  instance_type               = var.public_instance_type
+  key_name                    = var.public_instance_key_name
+  ami                         = var.public_instance_ami
   associate_public_ip_address = true
 
   tags = {

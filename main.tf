@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_vpc" "app_vpc" {
 
-  cidr_block = var.vpc_cidr_block
+  cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 
   tags = {
