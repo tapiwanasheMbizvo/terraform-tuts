@@ -17,7 +17,7 @@
 
     - name: Clone the repository using GitHub token
       shell: |
-        git clone https://{{ github_token }}:x-oauth-basic@{{ repo_url | regex_replace('https://github.com/', '') }}
+        git clone https://{{ github_token }}@github.com/tapiwanasheMbizvo/demo-banking.git
       args:
         chdir: "{{ clone_dir }}"
 

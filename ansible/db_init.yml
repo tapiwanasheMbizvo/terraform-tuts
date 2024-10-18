@@ -37,6 +37,20 @@
         state: started
         enabled: true
 
+    - name: Configure PostgreSQL to use password authentication
+      lineinfile:
+        path: /etc/postgresql/15/main/pg_hba.conf
+        regexp: '^host\s+all\s+postgres'
+        line: 'host    all             postgres        127.0.0.1/32            md5'
+        state: present
+      notify: restart-pg
+
+    - name: restart-pg
+      service:
+        name: postgresql
+        state: restarted
+
+
     - name: Create user appuser
       become: true
       postgresql_user:
