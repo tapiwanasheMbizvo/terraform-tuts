@@ -1,0 +1,28 @@
+# Install Postgres 15 using Ansible
+- name: Install postgres 
+  hosts: db
+  become: true
+
+  tasks:
+    - name: Add Postgres repo
+      become: true
+      apt_repository:
+        repo: ppa:pitti/postgresql-15
+        state: present
+
+    - name: Update package lists
+      become: true
+      apt:
+        update_cache: yes
+
+    - name: Install Postgres 15
+      become: true
+      apt:
+        name: postgresql-15
+        state: present
+
+    - name: Start Postgres service
+      become: true
+      service:
+        name: postgresql-15
+        state: started
