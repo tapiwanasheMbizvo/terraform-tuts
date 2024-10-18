@@ -27,3 +27,16 @@ output "private_instance_key_name" {
 
   value = aws_instance.private_backend_instance.key_name
 }
+
+
+output "private_instances_key" {
+
+  value =  tls_private_key.private_instances_key.private_key_pem
+  sensitive = true
+}
+
+output "public_instances_key" {
+
+  value =  tls_private_key.public_instances_key.private_key_pem
+  sensitive = true
+}
