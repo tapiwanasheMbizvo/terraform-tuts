@@ -1,0 +1,16 @@
+- name: Install Java, Git, and Jenkins
+  hosts: front-end
+  become: true
+
+  tasks:
+    - name: Install Java
+      become: true
+      apt:
+        name: openjdk-17-jre-headless
+        state: present
+
+    - name: Install Git
+      become: true
+      apt:
+        name: git
+        state: present
