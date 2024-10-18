@@ -3,3 +3,8 @@ psql -U newuser -h 127.0.0.1 -d mydb
 psql -U postgres -h 127.0.0.1
 
 psql -U appuser -h 127.0.0.1 -d demo
+
+ansible-vault create secrets.yml
+
+,dev
+ansible-playbook your_playbook.yml --ask-vault-pass

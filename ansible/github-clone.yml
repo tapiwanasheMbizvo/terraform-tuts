@@ -1,0 +1,30 @@
+---
+- name: Clone GitHub Repository
+  hosts:  front-end
+  become: yes  # Use this if you need sudo privileges
+  vars_files:
+    - secrets.yml  # Include your vault file
+
+  vars:
+    repo_url: "https://github.com/tapiwanasheMbizvo/demo-banking.git"  # Replace with your repo URL
+    clone_dir: "/home/ubuntu/dev/spring-apps"  # Replace with your desired directory path
+
+  tasks:
+    - name: Create clone directory
+      file:
+        path: "{{ clone_dir }}"
+        state: directory
+
+    - name: Clone the repository using GitHub token
+      shell: |
+        git clone https://{{ github_token }}:x-oauth-basic@{{ repo_url | regex_replace('https://github.com/', '') }}
+      args:
+        chdir: "{{ clone_dir }}"
+
+    - name: Verify cloning of repository
+      command: ls -l "{{ clone_dir }}"
+      register: clone_result
+
+    - name: Print clone result
+      debug:
+        msg: "{{ clone_result.stdout }}"
