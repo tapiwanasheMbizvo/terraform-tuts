@@ -1,28 +1,51 @@
 # Install Postgres 15 using Ansible
-- name: Install postgres 
+- name: Install PostgreSQL
   hosts: db
   become: true
 
   tasks:
-    - name: Add Postgres repo
-      become: true
+    - name: Add PostgreSQL GPG key
+      apt_key:
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        state: present
+
+    - name: Add PostgreSQL repository
       apt_repository:
-        repo: ppa:pitti/postgresql-15
+        repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
         state: present
 
     - name: Update package lists
-      become: true
       apt:
         update_cache: yes
 
-    - name: Install Postgres 15
-      become: true
+    - name: Install PostgreSQL 15
       apt:
         name: postgresql-15
         state: present
 
-    - name: Start Postgres service
-      become: true
+    - name: Start PostgreSQL service
       service:
-        name: postgresql-15
+        name: postgresql
         state: started
+        enabled: true
+
+    - name: Create user appuser
+      become: true
+      postgresql_user:
+        name: appuser
+        password: "{{ 'appuser_password' | password_hash('sha512') }}"
+        role_attr_flags: LOGIN
+        state: present
+
+    - name: Create database mydb
+      become: true
+      postgresql_db:
+        name: mydb
+        state: present
+
+    - name: Grant privileges to appuser on mydb
+      become: true
+      postgresql_privs:
+        db: mydb
+        role: appuser
+        privs: ALL
