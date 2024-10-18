@@ -19,7 +19,7 @@ resource "aws_instance" "private_backend_instance" {
   subnet_id       = aws_subnet.private_subnet.id
   security_groups = [aws_security_group.private_instances_sg.id]
   instance_type   = var.private_instance_type
-  key_name        = aws_key_pair.private_instances_key_pair.key_name_prefix          
+  key_name        = aws_key_pair.private_instances_key_pair.key_name          
   ami             = var.private_instance_ami
 
   tags = {
