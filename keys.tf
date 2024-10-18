@@ -1,4 +1,4 @@
-resource "tls_private_key" "public_instances_key" {
+resource "tls_private_key" "front_end_key" {
     algorithm = "RSA"
     rsa_bits = 2048
   
@@ -11,12 +11,12 @@ resource "tls_private_key" "private_instances_key" {
   
 }
 
-resource "aws_key_pair" "public_instances_key" {
-    key_name = "public-ec2-key"
-    public_key = tls_private_key.public_instances_key.public_key_openssh
+resource "aws_key_pair" "front_end_key" {
+    key_name = "front_end_key"
+    public_key = tls_private_key.front_end_key.public_key_openssh
 
     provisioner "local-exec" {
-        command = "echo '${tls_private_key.public_instances_key.private_key_pem}' > ./public-ec2-key.pem "
+        command = "echo '${tls_private_key.front_end_key.private_key_pem}' > ./front_end_key.pem "
       
     }
   
