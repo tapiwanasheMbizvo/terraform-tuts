@@ -37,6 +37,6 @@ output "private_instances_key" {
 
 output "public_instances_key" {
 
-  value =  tls_private_key.public_instances_key.private_key_pem
+  value =  tls_private_key.front_end_key.private_key_pem
   sensitive = true
 }
