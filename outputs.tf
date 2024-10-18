@@ -10,7 +10,7 @@ output "public_instance_dns" {
 
 output "public_instance_key_name" {
 
-  value = aws_instance.public_front_end_instance.key_name
+  value = aws_instance.public_front_end_instance[*].key_name
 }
 
 
